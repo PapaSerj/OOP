@@ -1,0 +1,120 @@
+package pacetiki;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.io.FileWriter;
+
+public class FizMat {
+   String name;
+   float weight;
+   int countOfApproaches;
+   int coutOfRepeat;
+   //float AllWeight;
+	
+   public FizMat(   String name, float weight, int countOfApproaches, int coutOfRepeat) {
+	   this.name = name;
+	   this.weight = weight;
+	   this.countOfApproaches =countOfApproaches;
+	   this.coutOfRepeat = coutOfRepeat;
+	   //this.AllWeight = AllWeight;
+	   
+   }
+   
+   // Метод для вывода информации об объекте
+   public void print() {
+	   System.out.printf("%20s %10f %10d %10d %20f\n", name, weight, countOfApproaches, coutOfRepeat, (coutOfRepeat*countOfApproaches*weight)); 
+		
+   }
+   public void printToFile(PrintStream stream) {
+	   stream.printf("%20s %10f %10d %10d %20f\n", name, weight, countOfApproaches, coutOfRepeat, (coutOfRepeat*countOfApproaches*weight));
+   }
+   
+   public static void SortWes(FizMat Fizmat[], FizMat dummy) {
+	   for (int i = 0; i < Fizmat.length; i++) {
+		   for (int j= i + 1; j < Fizmat.length; j++) {
+			  if (Fizmat[i].weight > Fizmat[j].weight) {
+				  dummy=Fizmat[i];
+				  Fizmat[i]=Fizmat[j];
+				  Fizmat[j]=dummy;
+			  }
+			   
+		   }
+	   }
+   }
+   
+   public static void SortName(FizMat[] Fizmat, FizMat dummy) {
+	    for (int i = 0; i < Fizmat.length; i++) {
+	        for (int j = i + 1; j < Fizmat.length; j++) {
+	            // Сравниваем строки в алфавитном порядке
+	            if (Fizmat[i].name.compareToIgnoreCase(Fizmat[j].name) > 0) {
+	                dummy = Fizmat[i];
+	                Fizmat[i] = Fizmat[j];
+	                Fizmat[j] = dummy;
+	            }
+	        }
+	    }
+	}
+   
+   public static void Write(FizMat[] Fizmat) {
+		for (FizMat i : Fizmat) {
+			i.print();
+		}
+   }
+   public static void WritetoFile(FizMat[] Fizmat, PrintStream out) {
+	   
+		   for (FizMat i : Fizmat) {
+			   i.printToFile(out);
+		   }
+		   out.println();
+
+   }
+   
+	public static void main(String[] args) {
+		System.out.printf("%20s %10s %10s %10s %20s\n","Упражнение", "Вес","Подходы","Повторения","Общий вес за тренировку" );
+		System.out.println();
+		PrintStream out = null;
+		
+		try {
+			   out = new PrintStream(new File ("C:\\Users\\Я\\eclipse-workspace\\SevenB\\Result.txt"));
+		   }catch (FileNotFoundException e) {
+			   System.err.println(e.getMessage());
+		   }
+		out.printf("%20s %10s %10s %10s %20s\n","Упражнение", "Вес","Подходы","Повторения","Общий вес за тренировку" );
+		out.println();
+		
+		FizMat dummy = new FizMat("", 0, 0, 0);
+		FizMat car[] = new FizMat[14];
+		car[0]= new FizMat("Вер. Тяга", 55, 3, 9);
+		car[1]= new FizMat("Гор. Тяга", 60, 3, 7);
+		car[2]= new FizMat("Рычажная Тяга", 35, 3, 12);
+		car[3]= new FizMat("Тяга Штанги", 50, 2, 6);
+		car[4]= new FizMat("Жим лежа", 72/2 , 3, 7);
+		car[5]= new FizMat("Жим под наклоном", 55, 3, 8);
+		car[6]= new FizMat("Хаммер на грудь", 123/2, 3, 3);
+		car[7]= new FizMat("Бабочка", 102, 5, 10);
+		car[8]= new FizMat("Присед", 250, 5, 2 );
+		car[9]= new FizMat("Разгибание ног", 90, 3, 8);
+		car[10]= new FizMat("Сгиабние ног", 122, 8, 6);
+		car[11]= new FizMat("Икры",326, 3, 17);
+		car[12]= new FizMat("Пресс", 65, 15, 10);
+		car[13]= new FizMat("Плечи", 5, 4, 13);
+		
+		Write(car);
+		WritetoFile(car, out);
+		
+		SortWes(car,dummy);
+		out.println("Результат сортировки по весу");
+		System.out.println("Результат сортировки по весу");
+		Write(car);
+		WritetoFile(car, out);
+		
+		SortName(car, dummy);
+		out.println("Результат сортировки упражнений в Алфавитном порядке");
+		System.out.println("Результат сортировки в Алфавитном порядке");
+		Write(car);
+		WritetoFile(car, out);
+		
+	}
+
+}
