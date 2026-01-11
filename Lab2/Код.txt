@@ -1,0 +1,147 @@
+package popa;
+import javax.swing.JFrame;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import javax.swing.*;
+
+public class popa {
+	
+	final static JComboBox<String> Operator1 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator2 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator3 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator4 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator5 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator6 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator7 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator8 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JComboBox<String> Operator9 = new JComboBox<String>(new String[] {"","Дуб","Дубовые доски","Булыжник","Палка"});
+	final static JLabel Result = new JLabel("");
+	final static JButton Bytton = new JButton("===>");
+	
+	// Массив всех операторов для удобной проверки
+    // Объявляем его как статическое поле
+    static JComboBox<String>[] allOperators;
+    
+    // Статический блок инициализации для массива
+    static {
+        allOperators = new JComboBox[] {
+            Operator1, Operator2, Operator3, Operator4, Operator5, 
+            Operator6, Operator7, Operator8, Operator9
+        };
+    }
+	
+	public static void Disign(JFrame frame) {
+		frame.setLayout(new GridLayout(3,5));
+		frame.add(Operator1);
+		frame.add(Operator2);
+		frame.add(Operator3);
+		frame.add(new JLabel(""));
+		frame.add(new JLabel(""));
+		frame.add(Operator4);
+		frame.add(Operator5);
+		frame.add(Operator6);
+		frame.add(Bytton);
+		frame.add(Result);
+		frame.add(Operator7);
+		frame.add(Operator8);
+		frame.add(Operator9);
+		frame.add(new JLabel(""));
+		frame.add(new JLabel(""));
+	}
+	
+    // Метод для проверки, пустой ли ComboBox
+    private static boolean isEmpty(JComboBox<String> comboBox) {
+        String selected = (String) comboBox.getSelectedItem();
+        return selected != null && selected.equals("");
+    }
+    // Метод для проверки, дуб ли ComboBox
+    private static boolean isDub(JComboBox<String> comboBox) {
+        String selected = (String) comboBox.getSelectedItem();
+        return selected != null && selected.equals("Дуб");
+    }
+    // Метод для проверки, Дубовые доски ли ComboBox
+    private static boolean isDubWood(JComboBox<String> comboBox) {
+        String selected = (String) comboBox.getSelectedItem();
+        return selected != null && selected.equals("Дубовые доски");
+    }
+    
+    
+
+    private static int CountofEmpty() {
+    	int k=0;
+        for (int i = 0; i < allOperators.length; i++) {
+            if (isEmpty(allOperators[i])) {
+                k++;
+            }
+        }
+        return k;
+    }
+    
+    private static boolean Wood() {
+    	int k=0;
+        for (int i = 0; i < allOperators.length; i++) {
+            if (isDub(allOperators[i])) {
+                k++;
+            }
+        }
+        return k==1 && CountofEmpty()==8;
+    }
+	
+    private static boolean Sticks() {
+    	int k = CountofEmpty();
+        for (int i = 0; i < allOperators.length-3; i++) {
+            if (isDubWood(allOperators[i]) && isDubWood(allOperators[i+3]) && k == 7) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private static boolean Pickaxe() {
+    	if ((String)allOperators[0].getSelectedItem()== "Булыжник" && (String)allOperators[1].getSelectedItem()== "Булыжник" && (String)allOperators[2].getSelectedItem()== "Булыжник" && (String)allOperators[4].getSelectedItem()== "Палка"&& (String)allOperators[7].getSelectedItem()== "Палка") {
+    		return true;
+    	}
+    	return false;
+    }
+    
+	
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(1000,600);
+		frame.setLocation(0,0);
+		frame.setTitle("Верстак");
+		
+		Disign(frame);
+		
+		Bytton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				if (Wood() ) {
+				Result.setText("Дубовая доска (x4)");
+				}
+				else {
+					if (Sticks() ) {
+						Result.setText("Палка (x2)");
+						}
+						else {
+							if (Pickaxe()) {
+								Result.setText("Каменная кирка");
+							}else
+							{
+							Result.setText(null);
+							}
+						}
+				}
+			
+			}
+		});
+		
+		frame.setVisible(true);
+		
+	}
+}
