@@ -1,0 +1,20 @@
+package classes;
+
+public class AND implements IOperation {
+	
+	@Override 
+	public String getSign() {
+		return "AND";
+	}
+	
+	@Override
+	public String getName() {
+		return "Логическое и ";
+	}
+	
+	@Override 
+	public int estimate (int a, int b) {
+
+		return a & b;
+	}
+}

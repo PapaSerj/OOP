@@ -1,0 +1,19 @@
+package classes;
+
+public class XOR implements IOperation {
+	@Override 
+	public String getSign() {
+		return "XOR";
+	}
+	
+	@Override
+	public String getName() {
+		return "Исключающее или ";
+	}
+	
+	@Override 
+	public int estimate (int a, int b) {
+
+		return a ^ b;
+	}
+}

@@ -1,0 +1,17 @@
+package classes;
+
+public class UI {
+	
+	public static void main(String[] args) {
+		
+		IOperation[] operation = {
+				new AND(), new OR(), new Sheffer(), new XOR()
+		};
+		int a = 1024; int b = 258; 
+		for (IOperation op : operation) {
+			
+			System.out.println(op.getName());
+			System.out.printf("%d %s %d = %d \n", a,op.getSign(), b, op.estimate(a, b));
+		}
+	}
+}
