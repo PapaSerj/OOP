@@ -1,0 +1,86 @@
+package Lab5;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Calcul {
+
+    public static double calculate(double num1, double num2, char operation) 
+            throws ArithmeticException, IllegalArgumentException {
+        
+        switch (operation) {
+            case '+':
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+                return num1 * num2;
+            case '/':
+                if (num2 == 0) {
+                    throw new ArithmeticException("Деление на ноль запрещено!");
+                }
+                return num1 / num2;
+            default:
+                throw new IllegalArgumentException("Неподдерживаемая операция: " + operation);
+        }
+    }
+	
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean continueCalculation = true;
+        
+        System.out.println("=== КАЛЬКУЛЯТОР С ОБРАБОТКОЙ ИСКЛЮЧЕНИЙ ===");
+        
+        while (continueCalculation) {
+            try {
+                // Ввод первого числа
+                System.out.print("\nВведите первое число: ");
+                double num1 = scanner.nextDouble();
+                
+                // Ввод операции
+                System.out.print("Введите операцию (+, -, *, /): ");
+                char operation = scanner.next().charAt(0);
+                
+                // Ввод второго числа
+                System.out.print("Введите второе число: ");
+                double num2 = scanner.nextDouble();
+                
+                // Выполнение операции
+                double result = calculate(num1, num2, operation);
+                
+                // Вывод результата
+                System.out.printf("Результат: %.2f %c %.2f = %.2f%n", 
+                                 num1, operation, num2, result);
+                
+            } catch (InputMismatchException e) {
+                System.out.println("Ошибка: Введено некорректное число!");
+                scanner.nextLine(); // Очистка буфера сканера
+                continue;
+            } catch (ArithmeticException e) {
+                System.out.println("Ошибка: " + e.getMessage());
+                continue;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: " + e.getMessage());
+                continue;
+            } catch (Exception e) {
+                System.out.println("Неизвестная ошибка: " + e.getMessage());
+                scanner.nextLine(); // Очистка буфера сканера
+                continue;
+            }
+            
+            // Проверка, хочет ли пользователь продолжить
+            System.out.print("\nХотите продолжить? (да/нет): ");
+            String answer = scanner.next();
+            
+            if (!answer.equalsIgnoreCase("да")) {
+                continueCalculation = false;
+            }
+        }
+        
+        System.out.println("\nСпасибо за использование калькулятора!");
+        scanner.close();
+    }
+    
+
+
+}
