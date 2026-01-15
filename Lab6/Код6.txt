@@ -1,0 +1,96 @@
+package Lab6;
+
+import java.awt.*;
+import java.lang.*;
+import java.util.Random;
+
+import javax.swing.*;
+
+public class lab6 {
+    public static class thr extends Thread {
+        private JTextField fieldung;
+        private Random rand = new Random();
+
+        thr(JTextField tf) {
+            super();
+            this.fieldung = tf;
+            fieldung.setBackground(Color.lightGray);
+            fieldung.setForeground(Color.darkGray);
+            fieldung.setCaretColor(Color.GRAY);
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                int seisennn = rand.nextInt(0x100);
+                StringBuilder rS = new StringBuilder("");
+                for(int i = 0; i < seisennn; i++) {
+                    char Symb = (char)(rand.nextInt(0x5E) + 0x20);
+                    rS.append(Symb);
+                }
+                fieldung.setText(rS.toString());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                fieldung.setText("");
+            }
+        }
+    }
+
+    public static void main(String[] args){
+        JFrame framenn = new JFrame();
+        framenn.setTitle("Стол зачарования");
+        framenn.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        framenn.setSize(1500, 200);
+        framenn.setLocation(0, 333);
+        framenn.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        framenn.setBackground(Color.BLACK);   
+        framenn.getContentPane().setBackground(new Color(95, 63, 63)); 
+        
+        String[] numbers = {"7", "15", "30"};
+        JTextField fieldung[] = new JTextField[3];
+        thr thrds[] = new thr[3];
+        
+        for(int i = 0; i < 3; i++) {
+            // Левая часть - текстовые поля (занимают 80% ширины)
+            gbc.gridx = 0; // Колонка 0
+            gbc.gridy = i; // Строка i
+            gbc.gridwidth = 3; // Занимает 3 единицы ширины
+            gbc.gridheight = 1;
+            gbc.weightx = 0.8; // 80% ширины
+            gbc.weighty = 1.0;
+            gbc.fill = GridBagConstraints.BOTH; // Растягиваем по обеим осям
+            gbc.insets = new Insets(5, 5, 5, 10); // Отступы
+            
+            fieldung[i] = new JTextField();
+            fieldung[i].setBorder(BorderFactory.createLineBorder(Color.decode("#5f3f3f"), 2));
+            thrds[i] = new thr(fieldung[i]);
+            thrds[i].start();
+            
+            framenn.add(fieldung[i], gbc);
+            
+            // Правая часть - квадраты с цифрами (20% ширины)
+            gbc.gridx = 3; // Колонка 3
+            gbc.gridy = i;
+            gbc.gridwidth = 1; // Занимает 1 единицу ширины
+            gbc.weightx = 0.2; // 20% ширины
+            gbc.weighty = 1.0;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.insets = new Insets(5, 10, 5, 5);
+            
+            JLabel numberLabel = new JLabel(numbers[i], SwingConstants.CENTER);
+            numberLabel.setFont(new Font("Arial", Font.BOLD, 36));
+            numberLabel.setForeground(Color.decode("#90EE90"));
+            numberLabel.setBackground(Color.lightGray);
+            numberLabel.setOpaque(true);
+            
+            numberLabel.setBorder(BorderFactory.createLineBorder(Color.decode("#5f3f3f"), 2));
+            
+            framenn.add(numberLabel, gbc);
+        }
+        framenn.setVisible(true);
+    }
+}
