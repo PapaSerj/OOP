@@ -1,0 +1,116 @@
+package Lb7;
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+public class lab7 {
+    private JFrame frame;
+    private JList<String> sourceList;
+    private JList<String> selectedList;
+    private DefaultListModel<String> sourceModel;
+    private DefaultListModel<String> selectedModel;
+
+    public lab7() {
+
+        frame = new JFrame("Программа тренировки на сегодня");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700, 500);
+        frame.setLayout(new FlowLayout());
+
+  
+        sourceModel = new DefaultListModel<>();
+        sourceModel.addElement("Вер. Тяга");
+        sourceModel.addElement("Гор. Тяга");
+        sourceModel.addElement("Рычажная Тяга");
+        sourceModel.addElement("Тяга Штанги");
+        sourceModel.addElement("Жим лежа");
+        sourceModel.addElement("Жим под наклоном");
+        sourceModel.addElement("Хаммер на грудь");
+        sourceModel.addElement("Бабочка");
+        sourceModel.addElement("Присед");
+        sourceModel.addElement("Разгибание ног");
+        sourceModel.addElement("Сгиабние ног");
+        sourceModel.addElement("Икры");
+        sourceModel.addElement("Пресс");
+        sourceModel.addElement("Плечи");
+        sourceList = new JList<>(sourceModel);
+        sourceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JScrollPane sourceScrollPane = new JScrollPane(sourceList);
+        sourceScrollPane.setPreferredSize(new Dimension(200, 300)); 
+        frame.add(sourceScrollPane);
+
+
+        JButton addButton = new JButton(">");
+        JButton addAllButton = new JButton(">>");
+        JButton resetButton = new JButton("<");
+        JButton resetAllButton = new JButton("<<");
+        frame.add(addButton);
+        frame.add(addAllButton);
+        frame.add(resetAllButton);
+        frame.add(resetButton);
+
+
+        selectedModel = new DefaultListModel<>();
+        selectedList = new JList<>(selectedModel);
+        selectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JScrollPane selectedScrollPane = new JScrollPane(selectedList);
+        selectedScrollPane.setPreferredSize(new Dimension(200, 300)); 
+        frame.add(selectedScrollPane);
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> selectedValues = sourceList.getSelectedValuesList();
+                for (String value : selectedValues) {
+                    selectedModel.addElement(value);
+                    sourceModel.removeElement(value);
+                }
+            }
+        });
+
+
+        addAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < sourceModel.size(); i++) {
+                    selectedModel.addElement(sourceModel.get(i));
+                }
+                sourceModel.clear();
+            }
+        });
+
+ 
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> selectedValues = selectedList.getSelectedValuesList();
+                for (String value : selectedValues) {
+                    sourceModel.addElement(value);
+                    selectedModel.removeElement(value);
+                }
+            }
+        });
+
+
+        resetAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < selectedModel.size(); i++) {
+                    sourceModel.addElement(selectedModel.get(i));
+                }
+                selectedModel.clear();
+            }
+        });
+
+
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new lab7());
+    }
+}
